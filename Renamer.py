@@ -1,7 +1,8 @@
 import PyPDF2
 import re
 
-pdf_path = "Nome do pdf"
+pdf_path = "SEU PDF 1"
+pdf_path1 = "SEU PDF 2"
 def extrair_textoPdf(pdf_path):
     text = ""
     with open(pdf_path, 'rb') as file:
@@ -12,31 +13,38 @@ def extrair_textoPdf(pdf_path):
             text += page.extract_text()
     return text
 
-def extrair_valor(text):
+def extrairValor(text):
 
-    # Padrão de expressão regular para encontrar valores monetários no formato R$X.XX
     pattern = r'\d+(?:,\d+)?'
 
-    # Encontrar todos os valores monetários no texto
     money_values = re.findall(pattern, text)
 
-    # Retornar a lista de valores monetários encontrados
     return money_values
 
-def extriarCpfeCnpj(text):
-    # Padrão de expressão regular para encontrar CPFs e CNPJs
-    pattern_cpf = r'\b\d{3}\.\d{3}\.\d{3}-\d{2}\b'
-    pattern_cnpj = r'\b\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}\b'
-    pattern_cnpj1 = r'\b\d{2}\d{3}\d{3}\d{4}\d{2}\b'
-
-
-    # Encontrar todos os CPFs e CNPJs no texto
+def extrairCpf(text):
+    pattern_cpf = r'\.\d{3}\.\b\d{3}\d{3}-\d{2}\b'
     cpfs = re.findall(pattern_cpf, text)
-    cnpjs = re.findall(pattern_cnpj, text)
-    cnpjs1 = re.findall(pattern_cnpj1, text)
-    # Retornar a lista de CPFs e CNPJs encontrados
-    return cpfs, cnpjs, cnpjs1
 
-#print(extrair_textoPdf(pdf_path))
-print(extrair_valor(extrair_textoPdf(pdf_path)))
-print(extriarCpfeCnpj(extrair_textoPdf(pdf_path)))
+    return cpfs
+
+def extrairCnpj(text):
+     pattern_cnpj = r'\b\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}\b'
+     cnpjs = re.findall(pattern_cnpj, text)
+
+     return cnpjs
+
+def extrairCnpj1(text):
+    pattern_cnpj1 = r'\b\d{2}\d{3}\d{3}\d{4}\d{2}\b'
+    cnpjs1 = re.findall(pattern_cnpj1, text)
+
+    return cnpjs1
+
+
+
+for cnpj in extrairCnpj(extrair_textoPdf(pdf_path)):
+    print(cnpj)
+for cnpj in extrairCnpj1(extrair_textoPdf(pdf_path)):
+    print(cnpj)
+print(extrair_textoPdf(pdf_path))
+#print(extrairValor(extrair_textoPdf(pdf_path)))
+#print(extrairCpf(extrair_textoPdf(pdf_path)))
