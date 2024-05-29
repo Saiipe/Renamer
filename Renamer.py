@@ -3,7 +3,7 @@ import re
 import os
 
 pdfEspelho = "Seu Espelho"
-pdfBol = "Seu Boleto"
+pdfBol = "Seu boleto"
 def extrair_textoPdf(pdf):
     text = ""
     with open(pdf, 'rb') as file:
@@ -17,9 +17,17 @@ def extrair_textoPdf(pdf):
 def formatar_cnpj(cnpj):
     return f"{cnpj[:2]}.{cnpj[2:5]}.{cnpj[5:8]}/{cnpj[8:12]}-{cnpj[12:14]}"
 
-def extrairValor(text):
+def extrairValorBol(text):
 
-    pattern = r'\d+(?:,\d+)?'
+    pattern = r'Valor do Documento\n(\d{1,3}(?:\.\d{3})*,\d{2})'
+
+    money_values = re.findall(pattern, text)
+
+    return money_values
+
+def extrairValorEspelho(text):
+
+    pattern = r'Valor:  (\d{1,3}(?:\.\d{3})*,\d{2})'
 
     money_values = re.findall(pattern, text)
 
@@ -49,7 +57,15 @@ for cnpj in extrairCnpj1(extrair_textoPdf(pdfEspelho)):
 for cnpj in extrairCnpj(extrair_textoPdf(pdfBol)):
     print(cnpj)
 
+valorEsperlho = extrairValorBol(extrair_textoPdf(pdfBol))
+valorbol = extrairValorEspelho(extrair_textoPdf(pdfEspelho))
+
+if(valorbol == valorEsperlho):
+    print("Truee")
+    print(valorbol, valorEsperlho)
+
 padrao = r"-d"
+"""
 for cpnjC in extrairCnpj1(extrair_textoPdf(pdfEspelho)):
     for cnpjB in extrairCnpj(extrair_textoPdf(pdfBol)):
         if (cpnjC == cnpjB):
@@ -58,4 +74,5 @@ for cpnjC in extrairCnpj1(extrair_textoPdf(pdfEspelho)):
             bolFormatado = re.sub(padrao,"",bol)
             cpnjC = os.rename(pdfEspelho, "DOC-"+bolFormatado)
         else:
-            print("Nao")
+           print("Nao")
+"""

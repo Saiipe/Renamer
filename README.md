@@ -1,4 +1,4 @@
-<h1 style="text-align: center;">Remaner</h1>
+<h1 align="center">Remaner</h1>
 
 <H2>Como surgiu a ideia?</H2>
 <p>A ideia surgiu devido a uma empresa que realiza um processo manual de renomeação de arquivos, um processo bastante demorado e que consome muito tempo para ser concluído. </p>
@@ -9,5 +9,5 @@
 <h2>Alternativa usada por enquanto</h2>
 <p>Para facilitar esse processo, usei macros, mas isso me impedia de usar o computador. Embora seja uma boa solução para o problema, configurar o macro para uma pessoa leiga é muito complexo.</p>
 </br>
-<h4>OBS</h4>
+<h4>OBS:</h4>
 <p>Lembre-se de que o projeto é para um propósito específico. Caso você precise usá-lo em sua empresa, será necessário fazer algumas alterações.</p>
