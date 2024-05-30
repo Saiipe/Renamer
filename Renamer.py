@@ -2,7 +2,7 @@ import PyPDF2
 import re
 import os
 
-pdfEspelho = "Seu Espelho"
+pdfEspelho = "Seu espelho"
 pdfBol = "Seu boleto"
 def extrair_textoPdf(pdf):
     text = ""
@@ -52,27 +52,24 @@ def extrairCnpj1(text):# O cnpj abaixo precisa ser formatado!
     cnpjs1 = [formatar_cnpj(cnpj) for cnpj in cnpjs1]
     return cnpjs1
 
-for cnpj in extrairCnpj1(extrair_textoPdf(pdfEspelho)):
-    print(cnpj + " # Client")
-for cnpj in extrairCnpj(extrair_textoPdf(pdfBol)):
-    print(cnpj)
 
-valorEsperlho = extrairValorBol(extrair_textoPdf(pdfBol))
-valorbol = extrairValorEspelho(extrair_textoPdf(pdfEspelho))
 
-if(valorbol == valorEsperlho):
-    print("Truee")
-    print(valorbol, valorEsperlho)
+
 
 padrao = r"-d"
-"""
+
 for cpnjC in extrairCnpj1(extrair_textoPdf(pdfEspelho)):
     for cnpjB in extrairCnpj(extrair_textoPdf(pdfBol)):
         if (cpnjC == cnpjB):
-            print("sim")
             bol = pdfBol
-            bolFormatado = re.sub(padrao,"",bol)
-            cpnjC = os.rename(pdfEspelho, "DOC-"+bolFormatado)
+            print("sim")
+            for valorEsperlho in extrairValorEspelho(extrair_textoPdf(pdfEspelho)):
+                for valorbol in extrairValorBol(extrair_textoPdf(pdfBol)):
+                    if(valorbol == valorEsperlho):
+                        print("Truee")
+                        bolFormatado = re.sub(padrao,"",bol)
+                        cpnjC = os.rename(pdfEspelho, "DOC-"+bolFormatado)
+                    else:
+                        print("não tem valor igual")
         else:
-           print("Nao")
-"""
+            print("Nao tem cnpj igual")
