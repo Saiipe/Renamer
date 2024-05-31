@@ -1,9 +1,10 @@
 import PyPDF2
 import re
 import os
+from tkinter import filedialog
+import tkinter.messagebox 
 
-pdfEspelho = "Seu espelho"
-pdfBol = "Seu boleto"
+
 def extrair_textoPdf(pdf):
     text = ""
     with open(pdf, 'rb') as file:
@@ -54,6 +55,8 @@ def extrairCnpj1(text):# O cnpj abaixo precisa ser formatado!
 
 
 
+pdfEspelho = "Seu Espelho"
+pdfBol = "Seu Boleto"
 
 
 padrao = r"-d"
@@ -69,7 +72,10 @@ for cpnjC in extrairCnpj1(extrair_textoPdf(pdfEspelho)):
                         print("Truee")
                         bolFormatado = re.sub(padrao,"",bol)
                         cpnjC = os.rename(pdfEspelho, "DOC-"+bolFormatado)
+                        break
                     else:
                         print("não tem valor igual")
         else:
             print("Nao tem cnpj igual")
+
+tkinter.messagebox.showinfo(title="FIM", message="Processo Finalizado!!!", )
