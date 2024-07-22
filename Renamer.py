@@ -71,7 +71,7 @@ if pdfEspelhos and pdfBoletos:
                 for valorEspelho in valoresEspelho:
                     if valorEspelho in valoresBol:
                         bolFormatado = re.sub(padrao, "", os.path.basename(pdfBol))
-                        novo_nome = f"DOC-{bolFormatado}.pdf"
+                        novo_nome = f"DOC-{bolFormatado}"
                         novo_caminho = os.path.join(os.path.dirname(pdfEspelho), novo_nome)
                         
                         # Se o arquivo já existir, pula para o próximo boleto
