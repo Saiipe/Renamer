@@ -10,7 +10,7 @@ def extrair_textoPdf(pdf):
         num_pages = len(pdf_reader.pages)
         for page_number in range(num_pages):
             page = pdf_reader.pages[page_number]
-            text += page.extract_text()
+            text += page.extract_text() 
     return text
 
 def formatar_cnpj(cnpj):
@@ -22,8 +22,9 @@ def extrairValorBol(text):
     return money_values
 
 def extrairValorEspelho(text):
-    pattern = r'Valor:  (\d{1,3}(?:\.\d{3})*,\d{2})'
-    money_values = re.findall(pattern, text)
+
+    pattern = r'Valor:\s*[\r\n]*R\$ (\d{1,3}(?:\.\d{3})*,\d{2})'
+    money_values = re.findall(pattern, text, re.DOTALL)
     return money_values
 
 def extrairCpf(text):
@@ -40,7 +41,7 @@ def extrairCpf1(text):
 def extrairCnpj(text):
     pattern_cnpj = r'\b\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}\b'
     cnpjs = re.findall(pattern_cnpj, text)
-    return cnpjs[:2]
+    return cnpjs
 
 def extrairCnpj1(text):  # O cnpj abaixo precisa ser formatado!
     pattern_cnpj1 = r'\b\d{2}\d{3}\d{3}\d{4}\d{2}\b'
@@ -51,22 +52,25 @@ def extrairCnpj1(text):  # O cnpj abaixo precisa ser formatado!
 tela = Tk()
 tela.withdraw()
 
-pdfEspelhos = filedialog.askopenfilenames(title="Escolha os espelhos", filetypes=[("PDF files", "*.pdf")])
-pdfBoletos = filedialog.askopenfilenames(title="Escolha os boletos", filetypes=[("PDF files", "*.pdf")])
+pdfEspelho = filedialog.askopenfilenames(title="Escolha os espelhos", filetypes=[("PDF files", "*.pdf")])
+pdfBoleto = filedialog.askopenfilenames(title="Escolha os boletos", filetypes=[("PDF files", "*.pdf")])
+
+print(pdfBoleto)
+print(pdfEspelho)
 
 padrao = re.compile(r"-(d|D|a|A)")
 
-if pdfEspelhos and pdfBoletos:
-    for pdfEspelho in pdfEspelhos:
+if pdfEspelho and pdfBoleto:
+    for pdfEspelho in pdfEspelho:
         cpnjsC = extrairCnpj1(extrair_textoPdf(pdfEspelho))
         cpfC= extrairCpf1(extrair_textoPdf(pdfEspelho))
         valoresEspelho = extrairValorEspelho(extrair_textoPdf(pdfEspelho))
         
-        for pdfBol in pdfBoletos:
+        for pdfBol in pdfBoleto:
             cnpjsB = extrairCnpj(extrair_textoPdf(pdfBol))
             cpfB = extrairCpf(extrair_textoPdf(pdfBol))
             valoresBol = extrairValorBol(extrair_textoPdf(pdfBol))
-            
+
             if set(cpnjsC).intersection(cnpjsB) or set(cpfC).intersection(cpfB):
                 for valorEspelho in valoresEspelho:
                     if valorEspelho in valoresBol:
@@ -74,12 +78,10 @@ if pdfEspelhos and pdfBoletos:
                         novo_nome = f"DOC-{bolFormatado}"
                         novo_caminho = os.path.join(os.path.dirname(pdfEspelho), novo_nome)
                         
-                        # Se o arquivo já existir, pula para o próximo boleto
                         if os.path.exists(novo_caminho):
                             print(f"Arquivo {novo_caminho} já existe. Pulando para o próximo.")
                             continue
-                        
-                        # Verifica se o arquivo de origem existe antes de renomear
+
                         if os.path.exists(pdfEspelho):
                             os.rename(pdfEspelho, novo_caminho)
                         else:
